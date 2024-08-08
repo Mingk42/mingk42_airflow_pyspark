@@ -56,7 +56,7 @@ with DAG(
     task_agg = BashOperator(
             task_id="agg",
             bash_command="""
-                $SPARK_HOME/bin/spark-submit movie_agg.py
+                $SPARK_HOME/bin/spark-submit ~/airflow_pyspark/py/movie_agg.py
             """
         )
     task_rm_dir = BashOperator(
