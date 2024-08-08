@@ -16,9 +16,9 @@ for i in df_m.columns:
     col_set+=f"NVL(m.{i},n.{i}) {i},"
 
 query="SELECT " + col_set[:-1] +" FROM movie_m m FULL JOIN movie_n n ON m.movieCd=n.movieCd"
-                
 
 df_join=spark.sql(query)
+
 
 df_join.show(50)
 

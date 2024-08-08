@@ -53,8 +53,12 @@ with DAG(
                 $SPARK_HOME/bin/spark-submit ~/airflow_pyspark/py/movie_join_df.py
             """
         )
-    task_agg = EmptyOperator(task_id="agg")
-    task_zv = EmptyOperator(task_id="zeppelin_view")
+    task_agg = BashOperator(
+            task_id="agg",
+            bash_command="""
+                $SPARK_HOME/bin/spark-submit movie_agg.py
+            """
+        )
     task_rm_dir = BashOperator(
             task_id="rm.dir",
             bash_command="""
@@ -70,5 +74,5 @@ with DAG(
 
 
     task_start >> task_chk_exist >> [task_rp, task_rm_dir]
-    task_rp >> task_join_df >> task_agg >> task_zv >> task_end
+    task_rp >> task_join_df >> task_agg >> task_end
     task_rm_dir >> task_rp
