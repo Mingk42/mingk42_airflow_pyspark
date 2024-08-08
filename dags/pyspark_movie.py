@@ -21,7 +21,7 @@ with DAG(
     description='pyspark_movie',
     schedule="10 0 * * *",
     start_date=datetime(2015, 1, 1),
-    end_date=datetime(2015, 1, 30),
+    end_date=datetime(2015, 2, 1),
     catchup=True,
     tags=["pyspark","movie"],
 ) as dag:
@@ -50,13 +50,13 @@ with DAG(
     task_join_df = BashOperator(
             task_id="join.df",
             bash_command="""
-                $SPARK_HOME/bin/spark-submit ~/airflow_pyspark/py/movie_join_df.py
+                $SPARK_HOME/bin/spark-submit ~/airflow_pyspark/py/movie_join_df.py {{ds_nodash}}
             """
         )
     task_agg = BashOperator(
             task_id="agg",
             bash_command="""
-                $SPARK_HOME/bin/spark-submit ~/airflow_pyspark/py/movie_agg.py
+                $SPARK_HOME/bin/spark-submit ~/airflow_pyspark/py/movie_agg.py {{ds_nodash}}
             """
         )
     task_rm_dir = BashOperator(
