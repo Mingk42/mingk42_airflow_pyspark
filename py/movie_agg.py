@@ -15,11 +15,13 @@ for col in ['rnum', 'rank', 'rankInten', 'salesAmt', 'salesShare', 'salesInten',
     col_set+=f"SUM({col}) sum_{col},"
 
 sumByMultiMovieYn=spark.sql(f"SELECT {load_dt} load_dt ,multiMovieYn, {col_set[:-1]} FROM movie_info GROUP BY multiMovieYn")
-sumByMultiMovieYn.write.mode("append").partitionBy("load_dt").parquet("/home/root2/data/movie/sum-multi/")
+# sumByMultiMovieYn.write.mode("append").partitionBy("load_dt").parquet("/home/root2/data/movie/sum-multi/")
+sumByMultiMovieYn.write.mode("overwrite").parquet(f"/home/root2/data/movie/sum-multi/load_dt={load_dt}")
 sumByMultiMovieYn.show()
 
 sumByRepNationCd=spark.sql(f"SELECT {load_dt} load_dt ,repNationCd, {col_set[:-1]} FROM movie_info GROUP BY repNationCd")
-sumByRepNationCd.write.mode("append").partitionBy("load_dt").parquet("/home/root2/data/movie/sum-nation/")
+# sumByRepNationCd.write.mode("append").partitionBy("load_dt").parquet("/home/root2/data/movie/sum-nation/")
+sumByRepNationCd.write.mode("overwrite").parquet(f"/home/root2/data/movie/sum-nation/load_dt={load_dt}")
 sumByRepNationCd.show()
 
 

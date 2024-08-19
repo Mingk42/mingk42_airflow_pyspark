@@ -24,6 +24,7 @@ df_join=spark.sql(query)
 
 df_join.show(50)
 
-df_join.write.mode('append').partitionBy("load_dt", "multiMovieYn", "repNationCd").parquet("/home/root2/data/movie/hive")
+# df_join.write.mode('append').partitionBy("load_dt", "multiMovieYn", "repNationCd").parquet("/home/root2/data/movie/hive")
+df_join.write.mode('overwrite').partitionBy("multiMovieYn", "repNationCd").parquet(f"/home/root2/data/movie/hive/load_dt={load_dt}")
 
 spark.stop()
